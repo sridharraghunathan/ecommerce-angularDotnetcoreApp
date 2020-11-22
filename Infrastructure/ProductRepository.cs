@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core;
+using Core.Interfaces;
 using Core.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
