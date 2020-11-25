@@ -7,13 +7,14 @@ using Core.Specification;
 using API.Dtos;
 using System.Linq;
 using AutoMapper;
+using API.Errors;
 
 namespace API.Controllers
 {
 
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductsController :ControllerBase
+    public class ProductsController :BaseApiController
     {
 
         private readonly IGenericRepository<Product> _productrepo;
@@ -62,6 +63,7 @@ namespace API.Controllers
             var spec = new ProductWithBrandAndTypeSpecification(id);
             var product = await _productrepo.GetEntityWithSpec(spec);
 
+            if (product == null ) return NotFound(new ApiResponse(404));
             // return new ProductDTOReturn {
             //     Id = product.Id,
             //     Name= product.Name,
