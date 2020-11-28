@@ -8,6 +8,7 @@ using API.Dtos;
 using System.Linq;
 using AutoMapper;
 using API.Errors;
+using API.Helper;
 
 namespace API.Controllers
 {
@@ -35,11 +36,15 @@ namespace API.Controllers
         }
  
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductDTOReturn>>> GetProducts (){
+        public async Task<ActionResult<IReadOnlyList<Pagination<ProductDTOReturn>>>>    
+         GetProducts ([FromQuery] ProductSpecParams productParams){
             // var products = await _productrepo.GetListAsync();
-            var spec = new ProductWithBrandAndTypeSpecification();
-            
+            var spec = new ProductWithBrandAndTypeSpecification(productParams);
+            var countSpec = new ProductForCountPagination(productParams);
             var products=  await _productrepo.ListAsync(spec);
+            var count =    await _productrepo.CountAsync(countSpec);
+             var data = _mapper.Map<IReadOnlyList<Product>,
+             IReadOnlyList<ProductDTOReturn>>(products);
 
         //    return products.Select( product => new ProductDTOReturn(){
         //         Id = product.Id,
@@ -51,12 +56,14 @@ namespace API.Controllers
         //         ProductType= product.ProductType.Name
         //    }).ToList() ;
 
-            return Ok(_mapper.Map<IReadOnlyList<Product>,
-             IReadOnlyList<ProductDTOReturn>>(products));
-
+            return Ok(new Pagination<ProductDTOReturn> {
+                PageIndex = productParams.PageIndex
+                ,PageSize = productParams.PageSize
+                ,Count = count 
+                ,Data = data 
+                });
            // return  Ok(products);
         }
- 
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDTOReturn>> GetProduct(int id ){
@@ -64,6 +71,9 @@ namespace API.Controllers
             var product = await _productrepo.GetEntityWithSpec(spec);
 
             if (product == null ) return NotFound(new ApiResponse(404));
+
+            return _mapper.Map<Product,ProductDTOReturn>(product);
+
             // return new ProductDTOReturn {
             //     Id = product.Id,
             //     Name= product.Name,
@@ -74,7 +84,6 @@ namespace API.Controllers
             //     ProductType= product.ProductType.Name
             // };
 
-            return _mapper.Map<Product,ProductDTOReturn>(product);
 
           // return  await _productrepo.GetIdByAsync(id);
 

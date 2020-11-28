@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-
 namespace API
 {
     public class Startup
@@ -30,9 +29,15 @@ namespace API
             x.UseSqlite(
                 _config.GetConnectionString("DefaultConnection"))
                 );
-
             services.AddAppliCationService();
             services.AddSwaggerDocument();
+            services.AddCors(opt => {
+
+                opt.AddPolicy("CorsPolicy", policy =>{
+
+                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
+            });
 
        
         }
@@ -55,6 +60,8 @@ namespace API
             app.UseRouting();
             
             app.UseStaticFiles();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
