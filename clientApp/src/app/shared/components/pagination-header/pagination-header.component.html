@@ -1,0 +1,16 @@
+<header *ngIf="count && count > 0">
+  <span>showing <strong>
+   {{
+       (this.pageIndex - 1) * this.pageSize+ 1
+   }} -
+   {{
+   (   this.pageIndex  * this.pageSize) > this.count
+   ? this.count :
+    this.pageIndex  * this.pageSize
+   }}
+   </strong> of
+   <strong>
+     {{count}}
+    </strong> Results</span>
+</header>
+<span *ngIf="count === 0">No Matching records for the filter</span>
