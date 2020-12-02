@@ -11,7 +11,12 @@ import {ShopParams} from '../shared/models/ShopParams';
   styleUrls: ['./shop.component.scss']
 })
 export class ShopComponent implements OnInit {
-@ViewChild('search', {static : true}) searchTerm: ElementRef;
+
+  /*Static -- true means when input element has no directive attached
+   when directive like ng if done use false
+  */
+
+@ViewChild('search', {static : false}) searchTerm: ElementRef;
   products: Iproduct[];
   brands: IBrand[];
   types: IType[];

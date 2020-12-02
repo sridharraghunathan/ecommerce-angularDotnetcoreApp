@@ -1,0 +1,7 @@
+<div class="container mt-5">
+<h4>INTERNAL SERVER ERROR - Dont Refresh the Page</h4>
+  <ng-container *ngIf="error">
+    <h5>Error : {{error.message}}</h5>
+    <code>Please Find the Stack Trace Error : {{error.details}}</code>
+  </ng-container>
+</div>
