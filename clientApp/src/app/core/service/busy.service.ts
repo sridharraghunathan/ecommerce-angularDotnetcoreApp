@@ -11,7 +11,7 @@ export class BusyService {
 
   busy(): void{
     this.busyCount ++;
-    console.log(this.busyCount);
+
     this.spinnerService.show(
       undefined, {
         type: 'timer',
@@ -21,7 +21,7 @@ export class BusyService {
   }
 
   idle(): void{
-    console.log(this.busyCount);
+
     this.busyCount --;
     if (this.busyCount <= 0) {
       this.busyCount = 0;
