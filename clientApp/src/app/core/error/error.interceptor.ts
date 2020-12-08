@@ -15,6 +15,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       catchError ((error: any) => {
+        console.log('testing', error.status)
         if (error ) {
            // internal server error which is code running got break
            if (error.status === 500){
@@ -36,12 +37,18 @@ export class ErrorInterceptor implements HttpInterceptor {
             } else {
               this.toastr.error ( error.error.message, error.error.statusCode );
             }
+            
           }
 
           // Authorisation issues
            if ( error.status === 401 ){
            this.toastr.error ( error.error.message, error.error.statusCode );
         }
+        
+         // Generic Error
+          if(error.status === 0){
+            this.toastr.error('Services May be down,Try Again Later', null )
+          }
 
         }
         return throwError(error);  // for showing to console.
