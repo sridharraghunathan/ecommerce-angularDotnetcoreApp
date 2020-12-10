@@ -31,7 +31,6 @@ export class ErrorInterceptor implements HttpInterceptor {
            if ( error.status === 400 ){
 
             if (error.error.errors){
-              console.log(error.error);
               throw (error.error) ; // throw to place where it occured.
 
             } else {
