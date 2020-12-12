@@ -26,7 +26,6 @@ export class BasketService {
       map(basket =>{
         this.basketSource.next(basket);
         this.calculateTotal();
-        console.log(this.getCurrentBasketValue());
       } )
     );
   }
@@ -56,10 +55,8 @@ export class BasketService {
     if (basket === null) {
       basket = this.createBasket();
     }
-    console.log('basket', basket)
     //Add the item to the basket or update the item in the basket.
      basket.items =  this.AddOrUpdateItem(basket.items, itemToAdd, quantity);
-
      //Calling the Http Method for persisting the data
      this.setBasket(basket);
   }

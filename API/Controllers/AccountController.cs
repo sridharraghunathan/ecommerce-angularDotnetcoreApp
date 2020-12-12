@@ -35,7 +35,7 @@ namespace API.Controllers
         }
 
         [HttpGet ]
-        [Authorize]
+        [Authorize] 
         public async Task <ActionResult<UserDto>> GetCurrentUserAsync(){
         var email = HttpContext.User?.Claims?
         .FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
