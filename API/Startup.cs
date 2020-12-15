@@ -3,6 +3,7 @@ using API.Helper;
 using API.Middleware;
 using AutoMapper;
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,10 +27,17 @@ namespace API
  
             services.AddControllers();
             services.AddAutoMapper(typeof(MapperProfiles));
+            //For Database ConnectionSkinet
             services.AddDbContext<StoreContext>(x => 
             x.UseSqlite(
                 _config.GetConnectionString("DefaultConnection"))
                 );
+            //For Database ConnectionIdentity 
+
+            services.AddDbContext<AppIdentityDBContext>( x =>
+            
+                x.UseSqlite(_config.GetConnectionString("IdentityConnection"))
+            );
 
             services.AddSingleton<IConnectionMultiplexer>( c =>
             {
@@ -39,6 +47,7 @@ namespace API
 
             );
             services.AddAppliCationService();
+            services.AddIdentityServices(_config);
             services.AddSwaggerDocument();
             services.AddCors(opt => {
                 opt.AddPolicy("CorsPolicy", policy =>{
@@ -70,6 +79,8 @@ namespace API
 
             app.UseCors("CorsPolicy");
 
+            app.UseAuthentication();
+            
             app.UseAuthorization();
 
             app.SwaggerUIExtension();

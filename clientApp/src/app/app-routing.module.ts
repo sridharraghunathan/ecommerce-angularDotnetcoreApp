@@ -4,6 +4,7 @@ import { NotFoundComponent } from './core/not-found/not-found.component';
 import { ServerErrorComponent } from './core/server-error/server-error.component';
 import { TestErrorComponent } from './core/test-error/test-error.component';
 import { HomeComponent } from './home/home.component';
+import {AuthGuard} from './core/auth.guard';
 
 
 const routes: Routes = [
@@ -19,9 +20,14 @@ const routes: Routes = [
     loadChildren :() => import ('./basket/basket.module').then( m => m.BasketModule),
   data :{ breadcrumb : 'Basket'}},
 
-  {path : 'checkout',
+  {path : 'checkout', canActivate : [AuthGuard]  ,
   loadChildren :() => import ('./checkout/checkout.module').then( m => m.CheckoutModule),
   data :{ breadcrumb : 'Checkout'}},
+
+  { path : 'account',
+  loadChildren :() => import('./account/account.module').then( m => m.AccountModule),
+  data : { skip : true }
+  },
 
   {path : '**' , redirectTo : 'not-found', pathMatch  : 'full'}
 ];

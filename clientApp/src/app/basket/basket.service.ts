@@ -1,3 +1,4 @@
+import { IDeliveryMethod } from './../shared/models/IDeliveryMethod.ts';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
@@ -17,16 +18,20 @@ export class BasketService {
 
   private basketTotalSource = new BehaviorSubject<IBasketTotal>(null);
   public  basketTotal$ = this.basketTotalSource.asObservable();
+  shippingCost = 0;
 
   constructor(private http :HttpClient) { }
 
+  setShippingCost(deliveryMethod:IDeliveryMethod){
+    this.shippingCost = deliveryMethod.price;
+    this.calculateTotal();
+  }
   getBasket(id: string ){
     return this.http.get<IBasket>(this.apiUrl + 'basket?id='+ id)
     .pipe(
       map(basket =>{
         this.basketSource.next(basket);
         this.calculateTotal();
-        console.log(this.getCurrentBasketValue());
       } )
     );
   }
@@ -50,39 +55,37 @@ export class BasketService {
      //get the product and quantity .
     let itemToAdd : IBasketItem = this.mappingProductToItem(product,quantity);
     //Intialize the new basket for the customer if not there else use the exising basket to add.
-    console.log(this.getCurrentBasketValue());
+ 
   //  const basket = this.getCurrentBasketValue() ?? this.createBasket();
   let basket = this.getCurrentBasketValue();
     if (basket === null) {
       basket = this.createBasket();
     }
-    console.log('basket', basket)
     //Add the item to the basket or update the item in the basket.
      basket.items =  this.AddOrUpdateItem(basket.items, itemToAdd, quantity);
-
      //Calling the Http Method for persisting the data
      this.setBasket(basket);
   }
 
   AddOrUpdateItem(items : IBasketItem[], itemToAdd : IBasketItem, quantity : number) : IBasketItem[] {
      // To Add the Item to as new element check if the item already exist or not
-     console.log(items,itemToAdd);
+
      const index = items.findIndex( basket => basket.id === itemToAdd.id);
      //Not Found then add the record to exising array
-     if( index === -1 ) 
+     if( index === -1 )
      {
        itemToAdd.quantity = quantity;
         items.push(itemToAdd);
-        console.log(items);
+
      }
      else{
-       items[index].quantity += quantity; 
+       items[index].quantity += quantity;
      }
 
      return items;
 
   }
- 
+
   createBasket (){
     let basket = new Basket();
     localStorage.setItem('basketId', basket.id);
@@ -102,7 +105,7 @@ export class BasketService {
   }
 
   calculateTotal(){
-    const shipping  = 0;
+    const shipping  = this.shippingCost;
     const basket = this.getCurrentBasketValue();
     const subTotal =  basket.items.reduce((sum,current)=> (current.price * current.quantity) + sum , 0);
     const total = shipping + subTotal;
@@ -133,13 +136,13 @@ export class BasketService {
     }
 
   }
-  
+
   removeItemBasket(item : IBasketItem) {
     // Instead of removing the arrary exlclude and override the array.
     const basket = this.getCurrentBasketValue();
     if (basket.items.some(x => x.id == item.id)){
       basket.items = basket.items.filter( it => it.id !== item.id);
-// after excluding the array check nothing is there in array or not 
+// after excluding the array check nothing is there in array or not
 // nothing is there then remove the basket completely
 // clear the data in local storage.
       if(basket.items.length> 0){
@@ -164,6 +167,13 @@ export class BasketService {
     );
   }
 
+
+  deleteLocalBasket( ) {
+        this.basketSource.next(null);
+        this.basketTotalSource.next(null);
+        localStorage.removeItem('basketId');
+
+  }
 
 
 }

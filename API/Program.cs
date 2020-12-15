@@ -1,8 +1,11 @@
 using System;
 using System.Threading.Tasks;
+using Core.Entities.Identity;
 using Infrastructure;
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,9 +28,21 @@ namespace API
 
                 try
                 {
+                    // while program gets started the below code will create the 
+                    // database Skinet if not there and do the migration if not there
                     var context = services.GetRequiredService<StoreContext>();
                     await context.Database.MigrateAsync();
                     await StoreContextSeed.SeedData(context, loggerFactory);
+
+                    // while program gets started the below code will create the 
+                    // database Identity if not available along with migration
+
+                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    var identityContext = services.GetRequiredService<AppIdentityDBContext>();
+                    await identityContext.Database.MigrateAsync();
+                    await AppIdentityContextSeed.SeedUserAsync(userManager);
+
+ 
                 }
                 
                 catch (Exception ex)

@@ -1,3 +1,4 @@
+import { JWTInterceptor } from './core/error/jwt.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
@@ -26,8 +27,9 @@ import { LoadingInterceptor } from './core/error/loading.interceptor';
     HomeModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass : ErrorInterceptor, multi: true   },
-    { provide: HTTP_INTERCEPTORS, useClass : LoadingInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS,  useClass : ErrorInterceptor,   multi: true },
+    { provide: HTTP_INTERCEPTORS,  useClass : LoadingInterceptor, multi: true },
+    { provide : HTTP_INTERCEPTORS, useClass : JWTInterceptor,     multi: true }
   ],
   bootstrap: [AppComponent]
 })
