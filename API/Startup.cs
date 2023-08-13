@@ -28,16 +28,26 @@ namespace API
             services.AddControllers();
             services.AddAutoMapper(typeof(MapperProfiles));
             //For Database ConnectionSkinet
+            /*
             services.AddDbContext<StoreContext>(x => 
             x.UseSqlite(
                 _config.GetConnectionString("DefaultConnection"))
                 );
-            //For Database ConnectionIdentity 
+*/
+             string connectionString = _config.GetConnectionString("DefaultConnection");
+            services.AddDbContext<StoreContext>(opt => {
+             opt.UseSqlServer(connectionString);
+         
+        });
+                  services.AddDbContext<AppIdentityDBContext>( opt =>  opt.UseSqlServer(connectionString ));
 
+            //For Database ConnectionIdentity 
+/*
             services.AddDbContext<AppIdentityDBContext>( x =>
             
                 x.UseSqlite(_config.GetConnectionString("IdentityConnection"))
             );
+*/
 
             services.AddSingleton<IConnectionMultiplexer>( c =>
             {
