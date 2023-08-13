@@ -9,13 +9,13 @@ import { AccountService } from '../account/account.service';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private accountService :AccountService,
-    private router : Router){}
+  constructor(private accountService: AccountService,
+              private router: Router){}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean>
     {
-     
+
   // If we use the replay subject then it will wait till the data comes.
   return this.accountService.currentUser$.pipe(
      map(res => {
@@ -29,5 +29,5 @@ export class AuthGuard implements CanActivate {
    )
 
   }
-  
+
 }

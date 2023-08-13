@@ -3,22 +3,41 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from './account/account.service';
 import { BasketService } from './basket/basket.service';
 
+enum AlertType {
+  Success="success",
+  Error="error",
+  Info="info",
+  Warning="warn"
+}
+
+
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
+
 export class AppComponent implements OnInit{
   title = 'Skinet';
+  weatherObse$ =  this.basketService.weathertesting();
 
-  constructor(private basketService : BasketService, 
+  constructor(private basketService : BasketService,
     private accountService :AccountService ){
 
   }
   ngOnInit(): void {
     this.getBasket();
     this.getCurrentUser();
+    this.weatherTesting();
+    this.weatherTesting();
+    this.weatherTesting();
+
+  }
+  weatherTesting() {
+  this.weatherObse$.subscribe(value => console.log(value));
   }
 
   getBasket(){

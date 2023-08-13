@@ -40,8 +40,6 @@ namespace API.Controllers
            return Ok();
         }
 
-
-
         [HttpGet("badrequest")]
         public ActionResult GetBadRequest(){
             

@@ -25,6 +25,8 @@ namespace Infrastructure.Data
             _context.Dispose();
         }
 
+        // we are creating the instance of each repository 
+
         public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity
         {
             if(_repositories == null) _repositories = new Hashtable();

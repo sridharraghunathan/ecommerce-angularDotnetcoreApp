@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.createRegisterForm();
   }
-  
+
   createRegisterForm() {
       this.registerForm = this.fb.group({
         displayName : [null, Validators.required],
@@ -44,21 +44,21 @@ error =>{
   }
 
 
-  emailExistCheck() : AsyncValidatorFn {
+  emailExistCheck(): AsyncValidatorFn {
     return control => {
-      return timer(500).pipe( 
-        switchMap( () => { 
+      return timer(500).pipe(
+        switchMap( () => {
           if (!control.value){
               return null;
           }
           //call the service to check email exist or not
-        return  this.accountService.emailExistCheck(control.value).pipe(
-            map ((res)=>{
+          return  this.accountService.emailExistCheck(control.value).pipe(
+            map ((res) => {
               return res ? {emailExists: true} : null;
             })
-          )
+          );
         })
-      )
-    }
+      );
+    };
   }
 }

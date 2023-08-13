@@ -8,8 +8,8 @@ using Microsoft.Extensions.Logging;
 namespace API.Controllers
 {
     [ApiController]
-    [ApiExplorerSettings(IgnoreApi =true)]
-    [Route("[controller]")]
+    // [ApiExplorerSettings(IgnoreApi =true)]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -32,7 +32,8 @@ namespace API.Controllers
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
+                Summary = Summaries[rng.Next(Summaries.Length)],
+                Month = "Janauary"
             })
             .ToArray();
         }

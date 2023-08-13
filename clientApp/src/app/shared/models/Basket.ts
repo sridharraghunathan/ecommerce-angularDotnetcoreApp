@@ -3,7 +3,7 @@ export interface IBasket {
     id: string;
     items: IBasketItem[];
   }
-  
+
 export   interface IBasketItem {
     id: number;
     brand: string;

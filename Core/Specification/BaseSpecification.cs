@@ -32,7 +32,7 @@ namespace Core.Specification
         protected void AddIncludes ( Expression<Func<T, Object>> includeExpression) {
                 Includes.Add (includeExpression);
          }  
-
+ 
         protected void AddOrderBy( Expression<Func<T,Object>> orderBy){
 
             OrderBy = orderBy;

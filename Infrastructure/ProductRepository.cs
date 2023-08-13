@@ -27,6 +27,7 @@ namespace Infrastructure
 
       public async   Task<Product> GetProductByIdAsync(int id)
         {
+ 
 
             /* 
             INCLUDE METHOD IS USED FOR NAVIGATION PROPERTIES TO SHOW 
@@ -38,6 +39,7 @@ namespace Infrastructure
             .Include(p => p.ProductType)
             .FirstOrDefaultAsync(p => p.Id == id);
         }
+
 
         public async Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync()
         {

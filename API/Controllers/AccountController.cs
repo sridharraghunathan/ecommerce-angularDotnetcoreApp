@@ -16,7 +16,7 @@ namespace API.Controllers
     public class AccountController : BaseApiController
     {
         //Constructor where we inject the other class 
-        // controller intialized the constructor will  be created
+        //controller intialized the constructor will  be created
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;

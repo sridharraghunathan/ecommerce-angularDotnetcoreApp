@@ -6,7 +6,7 @@
      [routerLinkActiveOptions]="{exact: true}"
     >Home</a>
     <a class="p-2" routerLink="/shop" routerLinkActive="active" >Shop</a>
-    <!-- <a class="p-2" routerLink="/test-error"  routerLinkActive="active" >Error</a> -->
+
   </nav>
   <div class="d-flex align-items-center">
     <a [routerLink]="['/basket']" routerLinkActive="router-link-active"  class="position-relative">
@@ -16,6 +16,7 @@
   <ng-container *ngIf="(currentUser$ | async) === null ">
     <a routerLink ="/account/register" class="btn btn-outline-secondary mr-2"  >Sign up</a>
     <a routerLink ="/account/login"  class="btn btn-outline-secondary mr-3"  >Login</a>
+    
   </ng-container>
 
 

@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 
 namespace Core.Specification
 {
+    // T refers the Class type like Product or Brand 
     public interface ISpecification<T>
     {
         //WHERE CONDITION FILTER
@@ -20,3 +21,4 @@ namespace Core.Specification
         bool IsPagingEnabled {get;}       
     }
 }
+ 

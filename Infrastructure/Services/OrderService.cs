@@ -16,7 +16,6 @@ namespace Infrastructure.Services
             private readonly IBasketRepository _basketRepo;
             private readonly IUnitOfWork _unitOfWork;
 
-
                    //Inject the all the Repo
             public OrderService(
             //     IGenericRepository<Product> productRepo ,
@@ -69,6 +68,7 @@ namespace Infrastructure.Services
                                           
                                             subtotal);
                    _unitOfWork.Repository<Order>().Add(order);
+                   
                    
                    // Save the Data to Database for Order table 
                    var result = await _unitOfWork.Complete();

@@ -14,7 +14,12 @@ export class BasketComponent implements OnInit {
   constructor(private basketService : BasketService) { }
 
   ngOnInit(): void {
+    console.log('basketcomponent');
     this.basket$ = this.basketService.basket$;
+
+    this.basketService.basket$.subscribe((value)=>{
+      console.log(value);
+    })
   }
 
   incrementItemQuantity(item: IBasketItem){

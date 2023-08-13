@@ -2,7 +2,7 @@ import { IDeliveryMethod } from './../shared/models/IDeliveryMethod.ts';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Basket, IBasket, IBasketItem, IBasketTotal } from '../shared/models/Basket';
 import { Iproduct } from '../shared/models/Product';
@@ -30,6 +30,7 @@ export class BasketService {
     return this.http.get<IBasket>(this.apiUrl + 'basket?id='+ id)
     .pipe(
       map(basket =>{
+        console.log('basketservice')
         this.basketSource.next(basket);
         this.calculateTotal();
       } )
@@ -39,6 +40,7 @@ export class BasketService {
   setBasket (basket: IBasket){
     this.http.post<IBasket>(this.apiUrl + 'basket', basket)
     .subscribe(basket =>{
+      console.log(basket);
       this.basketSource.next(basket);
       this.calculateTotal();
     },
@@ -55,7 +57,7 @@ export class BasketService {
      //get the product and quantity .
     let itemToAdd : IBasketItem = this.mappingProductToItem(product,quantity);
     //Intialize the new basket for the customer if not there else use the exising basket to add.
- 
+
   //  const basket = this.getCurrentBasketValue() ?? this.createBasket();
   let basket = this.getCurrentBasketValue();
     if (basket === null) {
@@ -175,5 +177,12 @@ export class BasketService {
 
   }
 
+  weathertesting() {
+  const http$= this.http.get(this.apiUrl + 'WeatherForecast')
+  const weatherObs$ = http$.pipe(
+      shareReplay(1)
+    )
+    return weatherObs$;
+  }
 
 }

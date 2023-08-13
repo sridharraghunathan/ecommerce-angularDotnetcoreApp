@@ -15,7 +15,6 @@ export class AccountService {
   private currentUser  = new ReplaySubject<IUser>(1);
   public currentUser$ = this.currentUser.asObservable();
   APIURL = environment.apiUrl;
-
   constructor(private router : Router, private http : HttpClient) { }
 
   // getCurrentUser(){
@@ -54,13 +53,12 @@ export class AccountService {
       this.currentUser.next(null);
       this.router.navigateByUrl('/');
     }
-
     emailExistCheck(email :string){
     return   this.http.get<boolean>(this.APIURL + 'account/emailexists?email=' + email);
     }
 
     private storeUser(user: IUser)  {
-      if(user){
+      if ( user ){
         localStorage.setItem('token', user.token);
         this.currentUser.next(user);
       }
