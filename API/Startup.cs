@@ -15,7 +15,7 @@ namespace API
 {
     public class Startup
     {
-        private  readonly IConfiguration _config  ;
+        private readonly IConfiguration _config;
         public Startup(IConfiguration configuration)
         {
             _config = configuration;
@@ -24,7 +24,7 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
- 
+
             services.AddControllers();
             services.AddAutoMapper(typeof(MapperProfiles));
             //For Database ConnectionSkinet
@@ -34,22 +34,23 @@ namespace API
                 _config.GetConnectionString("DefaultConnection"))
                 );
 */
-             string connectionString = _config.GetConnectionString("DefaultConnection");
-            services.AddDbContext<StoreContext>(opt => {
-             opt.UseSqlServer(connectionString);
-         
-        });
-                  services.AddDbContext<AppIdentityDBContext>( opt =>  opt.UseSqlServer(connectionString ));
+            string connectionString = _config.GetConnectionString("DefaultConnection");
+            services.AddDbContext<StoreContext>(opt =>
+            {
+                opt.UseSqlServer(connectionString);
+
+            });
+            services.AddDbContext<AppIdentityDBContext>(opt => opt.UseSqlServer(connectionString));
 
             //For Database ConnectionIdentity 
-/*
-            services.AddDbContext<AppIdentityDBContext>( x =>
-            
-                x.UseSqlite(_config.GetConnectionString("IdentityConnection"))
-            );
-*/
+            /*
+                        services.AddDbContext<AppIdentityDBContext>( x =>
 
-            services.AddSingleton<IConnectionMultiplexer>( c =>
+                            x.UseSqlite(_config.GetConnectionString("IdentityConnection"))
+                        );
+            */
+
+            services.AddSingleton<IConnectionMultiplexer>(c =>
             {
                 var configuration = ConfigurationOptions.Parse(_config.GetConnectionString("Redis"), true);
                 return ConnectionMultiplexer.Connect(configuration);
@@ -59,13 +60,15 @@ namespace API
             services.AddAppliCationService();
             services.AddIdentityServices(_config);
             services.AddSwaggerDocument();
-            services.AddCors(opt => {
-                opt.AddPolicy("CorsPolicy", policy =>{
-                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
-             });
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
             });
 
-       
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,29 +79,31 @@ namespace API
             //     app.UseDeveloperExceptionPage();
             // }
 
-           app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             //Not Found page Middleware.
-            app.UseStatusCodePagesWithReExecute("/errors/{0}") ;
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
+
 
             app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
-            
+
             app.UseAuthorization();
 
             app.SwaggerUIExtension();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapFallbackToController("Index","Fallback");
+                endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }
