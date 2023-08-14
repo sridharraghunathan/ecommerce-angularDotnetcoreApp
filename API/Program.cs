@@ -36,12 +36,12 @@ namespace API
 
                     // while program gets started the below code will create the 
                     // database Identity if not available along with migration
-
+                /*
                     var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     var identityContext = services.GetRequiredService<AppIdentityDBContext>();
                     await identityContext.Database.MigrateAsync();
                     await AppIdentityContextSeed.SeedUserAsync(userManager);
-
+*/
  
                 }
                 

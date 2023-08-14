@@ -88,6 +88,9 @@ namespace API
 
             app.UseRouting();
 
+            app.UseDefaultFiles();
+
+            app.UseStaticFiles();
 
             app.UseCors("CorsPolicy");
 
@@ -96,10 +99,7 @@ namespace API
             app.UseAuthorization();
 
             app.SwaggerUIExtension();
-
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-
+ 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
